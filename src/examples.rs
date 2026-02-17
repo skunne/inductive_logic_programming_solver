@@ -2,12 +2,18 @@ use crate::{parse::Parse, program::Predicate};
 
 #[derive(Debug)]
 pub struct Examples {
-    pos: Vec<Predicate>,
-    neg: Vec<Predicate>,
+    pub pos: Vec<Predicate>,
+    pub neg: Vec<Predicate>,
 }
 pub enum Example {
     Pos(Predicate),
     Neg(Predicate),
+}
+
+impl Examples {
+    pub fn is_empty(&self) -> bool {
+        self.pos.is_empty() && self.neg.is_empty()
+    }
 }
 
 impl Parse for Examples {
@@ -16,7 +22,7 @@ impl Parse for Examples {
         let mut neg = vec![];
         let lines = text.lines();
         for line in lines {
-            let pred = Example::parse(line)?;
+            let pred = Example::parse(line.trim().trim_end_matches('.'))?;
             match pred {
                 Example::Pos(pred) => {
                     pos.push(pred);

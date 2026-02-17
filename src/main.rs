@@ -1,4 +1,5 @@
 pub mod background_knowledge;
+pub mod constraints;
 pub mod examples;
 pub mod parse;
 pub mod problem;
@@ -9,7 +10,7 @@ use crate::problem::Problem;
 fn main() -> Result<(), anyhow::Error> {
     println!("Hello, world!\n");
     //settings = Settings();
-    let problem = Problem::new("examples/kinship-pi/")?;
+    let mut problem = Problem::new("examples/kinship-pi/")?;
     println!("{:?}\n", problem);
     let prog = problem.learn_solution(); // (prog, score, stats) = learn_solution(settings);
     if let Some(prog) = prog {
