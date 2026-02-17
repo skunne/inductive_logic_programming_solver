@@ -12,9 +12,9 @@ pub trait Parse {
 impl Parse for Program {
     /// Parse a program, which is a list of clause, one clause per line
     fn parse(text: &str) -> Result<Self, anyhow::Error> {
-        eprintln!("Program::parse({})", text);
+        // eprintln!("Program::parse({})", text);
         Ok(Program {
-            name: "Parsed program".to_owned(),
+            name: text.to_owned(),
             clauses: text
                 .lines()
                 .map(Clause::parse)
@@ -26,7 +26,7 @@ impl Parse for Program {
 impl Parse for Clause {
     /// Parse a clause, such as `"last(a,b):-tail(a,c),reverse(c,d),head(d,b)"`
     fn parse(line: &str) -> Result<Self, anyhow::Error> {
-        eprintln!("Clause::parse({})", line);
+        // eprintln!("Clause::parse({})", line);
         let x = line.trim_end_matches(".");
         let Some((head, body)) = x.split_once(":-") else {
             anyhow::bail!("Clause should be head:-body");
@@ -72,7 +72,7 @@ fn split_commas(text: &str) -> Vec<&str> {
 impl Parse for Predicate {
     /// Parse a predicate, such as `"mother(a,b)"`
     fn parse(p: &str) -> Result<Self, anyhow::Error> {
-        eprintln!("Predicate::parse({})", p);
+        // eprintln!("Predicate::parse({})", p);
         let Some((name, args)) = p.trim_end_matches(")").split_once("(") else {
             anyhow::bail!(
                 "Predicate::parse({}): predicate should be name(arg1, ...)",
@@ -94,7 +94,7 @@ impl Parse for Predicate {
 impl Parse for Literal {
     /// Parse a literal, which is just a grounded symbol or ungrounded symbol
     fn parse(l: &str) -> Result<Self, anyhow::Error> {
-        eprintln!("Literal::parse({})", l);
+        // eprintln!("Literal::parse({})", l);
         Ok(Literal::Grounded(Symbol::from_str(l)?))
     }
 }
@@ -102,7 +102,7 @@ impl Parse for Literal {
 impl Parse for Example {
     /// Parse an example, which is a predicate surrounded in `pos( )` or `neg( )`
     fn parse(p: &str) -> Result<Self, anyhow::Error> {
-        eprintln!("Example::parse({})", p);
+        // eprintln!("Example::parse({})", p);
         let p = p.trim().trim_end_matches('.');
         if (p.starts_with("pos(") || p.starts_with("neg(")) && p.ends_with(")") {
             let kind = &p[..3];
